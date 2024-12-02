@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.debug {
+	border: 1px red solid;
+}
+:root {
+	font-family: 'Roboto', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+
+	/* color-scheme: light dark; */
+	/* color: rgba(255, 255, 255, 0.87);
+	background-color: #242424; */
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+}
+.tooltip-container {
+	@apply flex flex-col items-center z-50 absolute left-1/2 -translate-x-1/2 bottom-full mb-1;
+}
+
+.tooltip-content {
+	@apply relative z-10 p-2 leading-none font-medium text-white w-max bg-slate-800 rounded py-1 px-2 inline-block;
+}
+
+.tooltip-arrow {
+	@apply w-3 h-3 -mt-2 rotate-45 bg-black;
+}
