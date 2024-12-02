@@ -25,7 +25,7 @@ const Footer = () => {
 					</a>{' '}
 				</p>
 				<p className="md:text-[20px] text-[15px] text-slate-50">
-					&copy; FFMS 2024
+					&copy; FFMS 2024/2025
 				</p>
 			</div>
 		</footer>
