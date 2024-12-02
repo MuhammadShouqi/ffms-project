@@ -19,7 +19,7 @@ const Footer = () => {
 					Website built by{' '}
 					<a
 						className="uppercase font-bold "
-						href="https://devabdulsalam.vercel.com"
+						href="https://muhammadshouqi.github.io/portfolio/"
 					>
 						MUHAMMAD SHOUQI
 					</a>{' '}
