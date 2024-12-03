@@ -13,7 +13,7 @@ const Section = () => {
 				</h2>
 				<div className="flex justify-center w-full md:max-w-xl mx-auto text-center leading-6">
 					<p>
-						At Ilouge, we take immense pride in curating a stay that redefines
+						At FFMS, we take immense pride in curating a stay that redefines
 						luxury. We&apos;re dedicated to ensuring that when you leave our
 						premises, your perception of opulence will have been forever
 						elevated.
