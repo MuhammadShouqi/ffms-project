@@ -24,6 +24,20 @@ export const fetchUsers = async (user) => {
 		return error;
 	}
 };
+export const fetchStaffs = async (user) => {
+	try {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${user?.token || user.accessToken}`,
+			},
+		};
+		const { data } = await axios.get(`${apiUrl}/admins/staffs`, config);
+		return data;
+	} catch (error) {
+		console.log(error.message);
+		return error;
+	}
+};
 export const fetchDashboard = async (user) => {
 	try {
 		const config = {

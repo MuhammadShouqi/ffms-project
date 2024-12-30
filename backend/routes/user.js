@@ -13,12 +13,13 @@ import {
 	changePassword,
 } from '../controllers/user.js';
 import auth, { verifyPermission } from '../middlewares/auth.js';
+import {upload} from '../middlewares/multer.js'; // File upload middleware
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/login/admin', loginAdmin);
 router.post('/refresh-token', refreshToken);
-router.patch('/update-profile', auth, updateProfile);
+router.patch('/update-profile', auth, upload.single('image'), updateProfile);
 router.patch('/update-password', auth, changePassword);
 router.get('/user', auth, getUser);
 router.get('/dashboard', auth, getDashboard);

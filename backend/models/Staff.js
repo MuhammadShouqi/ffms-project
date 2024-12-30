@@ -2,9 +2,10 @@ import mongoose from 'mongoose';
 
 const StaffSchema = new mongoose.Schema(
 	{
+		adminId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 		name: { type: String, required: true },
+		email: { type: String, required: true, unique: true },
 		role: { type: String, required: true },
-		contact: { type: String, required: true },
 	},
 	{ timestamps: true }
 );

@@ -123,9 +123,45 @@ export const getUsers = async (req, res) => {
 };
 export const updateProfile = async (req, res) => {
 	try {
+		const { body } = req;
+
+		// Find the user by ID
+		const user = await User.findById(req.user._id);
+
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' });
+		}
+
+		// Update the user profile with the provided body data
+		const updatedUser = await User.findByIdAndUpdate(
+			req.user._id,
+			{ $set: body },
+			{ new: true }
+		);
+
+		res.status(200).json({
+			user: updatedUser,
+			message: 'User profile updated successfully',
+		});
+	} catch (error) {
+		console.error('Error updating user profile:', error);
+		// Clean up file if it exists
+		if (req.file) {
+			await fs.promises
+				.unlink(req.file.path)
+				.catch((err) => console.error('Error deleting file:', err));
+		}
+
+		res.status(500).json({
+			error: error.message || 'An error occurred while updating the profile',
+		});
+	}
+};
+
+export const updateProfile2 = async (req, res) => {
+	try {
 		const { body, file } = req;
-		let user;
-		user = await User.findById(req.user._id, { new: true });
+		let user = await User.findById(req.user._id);
 		if (file) {
 			if (user.image.public_id) {
 				const deleteImage = await cloudinary.uploader.destroy(
@@ -140,9 +176,10 @@ export const updateProfile = async (req, res) => {
 			await user.save();
 			// user = await User.findByIdAndUpdate(user._id, image, { new: true });
 		}
-
+		console.log('req.body', user);
+		console.log('req.body', body);
 		user = await User.findByIdAndUpdate(
-			user._id,
+			{ _id: req.user._id },
 			{ ...user, ...body },
 			{ new: true }
 		);
