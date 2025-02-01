@@ -19,6 +19,7 @@ import AddFieldSchedule from './pages/AddFieldSchedule';
 import DashboardLayout from './pages/DashboardLayout';
 import Profile from './pages/Profile';
 import Staff from './pages/Staff';
+import EditStaff from './pages/EditStaff';
 function App() {
 	return (
 		<Routes>
@@ -40,6 +41,7 @@ function App() {
 						<Route path="/bookings" element={<Bookings />} />
 						<Route path="/booking" element={<Booking />} />
 						<Route path="/add-staff" element={<AddStaff />} />
+						<Route path="/edit-staff/:id" element={<EditStaff />} />
 						<Route path="/users" element={<Users />} />
 						<Route path="/staffs" element={<Staff />} />
 						<Route path="/booking" element={<Booking />} />

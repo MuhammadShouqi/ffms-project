@@ -4,8 +4,8 @@ import Loader from '../components/Loader';
 import { fetchStaffs } from '../hooks/axiosApis';
 import { useQuery, QueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa6';
-import { FiDelete } from 'react-icons/fi';
+import { FaPen, FaPlus } from 'react-icons/fa6';
+import { FiDelete, FiPenTool } from 'react-icons/fi';
 import axios from 'axios';
 
 const Users = () => {
@@ -80,7 +80,13 @@ const Users = () => {
 											<p className=" font-semibold">{item?.role}</p>
 										</div>
 									</div>
-									<div>
+									<div className='flex items-center gap-3'>
+										<button
+											onClick={() => navigate(`/edit-staff/${item._id}`)}
+											className="text-blue-400 hover:text-blue-500"
+										>
+											<FaPen />
+										</button>
 										<button
 											onClick={() => handledDeleteStaff(item._id)}
 											className="text-red-400 hover:text-red-500"

@@ -27,9 +27,17 @@ router.get('/admin/dashboard', auth, async (req, res) => {
 router.get('/staffs', auth, async (req, res) => {
 	try {
 		const staffs = await Staff.find({ adminId: req.user._id });
-		return res.status(201).json(staffs);
+		return res.status(200).json(staffs);
 	} catch (error) {
 		res.status(500).json({ message: 'Error getting staffs member', error });
+	}
+});
+router.get('/staffs/:id', auth, async (req, res) => {
+	try {
+		const staff = await Staff.findById({ _id: req.params.id });
+		return res.status(200).json(staff);
+	} catch (error) {
+		res.status(500).json({ message: 'Error getting staff', error });
 	}
 });
 router.post('/staff', auth, async (req, res) => {
@@ -52,7 +60,7 @@ router.post('/staff', auth, async (req, res) => {
 });
 
 // Edit staff member
-router.put('/staff/:staffId', auth, async (req, res) => {
+router.patch('/staffs/:staffId', auth, async (req, res) => {
 	const { staffId } = req.params;
 	const { name, role, email } = req.body;
 	try {

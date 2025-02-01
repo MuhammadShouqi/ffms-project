@@ -38,6 +38,23 @@ export const fetchStaffs = async (user) => {
 		return error;
 	}
 };
+export const fetchStaff = async (props) => {
+	try {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${props.user?.token || props.user.accessToken}`,
+			},
+		};
+		const { data } = await axios.get(
+			`${apiUrl}/admins/staffs/${props.id}`,
+			config
+		);
+		return data;
+	} catch (error) {
+		console.log(error.message);
+		return error;
+	}
+};
 export const fetchDashboard = async (user) => {
 	try {
 		const config = {
