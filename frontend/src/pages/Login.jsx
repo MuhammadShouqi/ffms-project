@@ -111,7 +111,7 @@ const Login = () => {
 										className="px-2 py-3 mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
 									/>
 								</div>
-								{/* Eye icon to toggle password visibility */}
+								{/* Eye icons to toggle password visibility */}
 								<div className="absolute inset-y-0 right-0  mt-6 flex items-center pr-4 z-10">
 									{showPassword ? (
 										<FiEyeOff
