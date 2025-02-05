@@ -3,7 +3,7 @@ import { upload } from '../middlewares/multer.js';
 import { uploader } from '../utils/cloudinary.js';
 import fs from 'fs';
 import auth, { verifyPermission } from '../middlewares/auth.js';
-import { getFields, getField, createField, addSchedule, updatePrice, checkBooking, bookField, deleteField } from '../controllers/field.js';
+import { getFields, getField, createField, addSchedule, updatePrice, bookField, deleteField } from '../controllers/field.js';
 
 const router = express.Router();
 
@@ -23,8 +23,6 @@ router.post('/:fieldId/schedule', addSchedule);
 
 // Update field prices
 router.put('/:fieldId/price', updatePrice);
-
-router.post('/:fieldId/check-booking', auth, checkBooking);
 router.post('/:fieldId/book', auth, bookField);
 
 router.delete('/:id', deleteField);

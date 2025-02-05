@@ -180,17 +180,17 @@ const Field = () => {
 							<div className="max-h-[300px] max-w-[300px] border mb-2">
 								<img
 									className="w-full object-cover"
-									src={data?.image?.url}
-									alt={data.name}
+									src={data?.field?.image?.url}
+									alt={data?.field?.name}
 								/>
 							</div>
 							<div className="flex items-center my-2">
 								<CiLocationOn className="font-bold text-3xl" />
-								<p className="text-black">Address: {data?.address}</p>
+								<p className="text-black">Address: {data?.field?.address}</p>
 							</div>
 							<div>
 								<h2>About this place</h2>
-								<p> {data?.description}</p>
+								<p> {data?.field?.description}</p>
 							</div>
 							<p>
 								Report Status:{' '}
@@ -204,17 +204,17 @@ const Field = () => {
 									{data?.status}
 								</span>
 							</p>
-							<p>Field Capacity: {data?.capacity}</p>
+							<p>Field Capacity: {data?.field?.capacity}</p>
 						</div>
 						{user?.user?.role === 'ADMIN' && data?.userId ? (
 							<div>
 								<div>
 									<h4 className=" text-2xl">User Info</h4>
 									<div>
-										<p>Name: {data?.userId?.name}</p>
-										<p>Rank: {data?.userId?.rank}</p>
-										<p>Phone: {data?.userId?.phone}</p>
-										<p>Email: {data?.userId?.email}</p>
+										<p>Name: {data?.field?.userId?.name}</p>
+										<p>Rank: {data?.field?.userId?.role}</p>
+										<p>Phone: {data?.field?.userId?.phone}</p>
+										<p>Email: {data?.field?.userId?.email}</p>
 									</div>
 								</div>
 								{data?.status !== 'available' ? (
@@ -223,8 +223,8 @@ const Field = () => {
 										{data?.schedule > 0 &&
 											data?.schedule.map((item) => (
 												<div key={item._id}>
-													<p>Name: {data?.userId?.name}</p>
-													<p>Rank {data?.userId?.rank}</p>
+													<p>Name: {data?.field?.userId?.name}</p>
+													<p>Rank {data?.field?.userId?.role}</p>
 												</div>
 											))}
 									</div>
@@ -238,16 +238,18 @@ const Field = () => {
 					</div>
 
 					<div className="flex justify-center my-10">
-						{user?.user?.role === 'ADMIN' && data?.status !== 'available' ? (
+						{user?.user?.role === 'ADMIN' &&
+						data?.field?.status !== 'available' ? (
 							<button
-								className="w-full max-w-[300px] mx-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+								className="w-full max-w-[300px] mx-auto px-4 py-4 text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
 								onClick={handleClick}
 							>
 								Confirm Field
 							</button>
-						) : user?.user?.role === 'ADMIN' && data?.status !== 'available' ? (
+						) : user?.user?.role === 'ADMIN' &&
+						  data?.field?.status !== 'available' ? (
 							<button
-								className="w-full max-w-[300px] mx-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+								className="w-full max-w-[300px] mx-auto px-4 py-4 text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
 								onClick={handleConfirm}
 							>
 								Confirm Reserve
@@ -255,7 +257,7 @@ const Field = () => {
 						) : (
 							<div className="mt-4 w-full flex justify-center">
 								<button
-									className="w-full max-w-[300px] mx-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+									className="w-full max-w-[300px] mx-auto px-4 py-4  text-white bg-blue-500 rounded-lg hover:bg-blue-700 focus:outline-none focus:shadow-outline"
 									onClick={() => navigate(`/book-field/${id}`)}
 								>
 									Reserve Field

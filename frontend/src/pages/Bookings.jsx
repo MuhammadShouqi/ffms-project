@@ -219,19 +219,19 @@ const Order = () => {
 										scope="col"
 										className="px-3 py-3 text-tiny text-text2 uppercase font-semibold w-[170px] text-end"
 									>
-										Days
+										Date
 									</th>
 									<th
 										scope="col"
 										className="px-3 py-3 text-tiny text-text2 uppercase font-semibold w-[170px] text-end"
 									>
-										StartDate
+										From
 									</th>
 									<th
 										scope="col"
 										className="px-3 py-3 text-tiny text-text2 uppercase font-semibold w-[170px] text-end"
 									>
-										EndDate
+										To
 									</th>
 									<th
 										scope="col"
@@ -283,13 +283,13 @@ const Order = () => {
 													</Link>
 												</td>
 												<td className="px-3 py-3 font-normal text-[#55585B] text-end">
-													{order?.days}
-												</td>
-												<td className="px-3 py-3 font-normal text-[#55585B] text-end">
 													{moment(order?.startDate).format('YYYY-MM-DD')}
 												</td>
 												<td className="px-3 py-3 font-normal text-[#55585B] text-end">
-													{moment(order?.endDate).format('YYYY-MM-DD')}
+													{order?.startTime}
+												</td>
+												<td className="px-3 py-3 font-normal text-[#55585B] text-end">
+													{order?.endTime}
 												</td>
 												<td className="px-3 py-3 font-normal text-heading text-end">
 													{order.amount}

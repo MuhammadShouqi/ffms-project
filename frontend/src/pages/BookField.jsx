@@ -35,7 +35,7 @@ const BookField = () => {
 	useEffect(() => {
 		if (data) {
 			console.log('datyuiopoiuy', data);
-			setAmount(data.pricePerHour);
+			setAmount(data?.field?.pricePerHour);
 		}
 	}, [data]);
 	// Generate time slots between 5 AM and 12 PM
@@ -81,7 +81,7 @@ const BookField = () => {
 
 		// Calculate total hours, rounding up if needed
 		const totalHours = Math.ceil(totalMinutes / 60);
-		const cost = totalHours * data.pricePerHour;
+		const cost = totalHours * data?.field?.pricePerHour;
 
 		setCost(cost);
 		setIsModal(true);
@@ -93,8 +93,8 @@ const BookField = () => {
 		try {
 			setLoading(true);
 			const { data } = await axios.post(
-				`${apiUrl}/fields/${id}/check-booking`,
-				{ status: 'COMPLETED', startDate: fromDate, fromTime, toTime },
+				`${apiUrl}/fields/${id}/book`,
+				{ startDate: fromDate, startTime: fromTime, endTime: toTime, amount },
 				{
 					headers: {
 						Authorization: `Bearer ${user?.token || user?.accessToken}`,
@@ -106,6 +106,7 @@ const BookField = () => {
 				toast.success('Field booked successfully');
 			}
 			setLoading(false);
+			setIsModal(false);
 		} catch (error) {
 			setLoading(false);
 			console.error('Error booking field:', error);
@@ -145,32 +146,32 @@ const BookField = () => {
 					<div className="bg-white border my-2 px-6 py-5 mt-10 rounded-md shadow-lg w-full md:max-w-2xl">
 						<div>
 							<span className="font-semibold text-lg">
-								&#8358;{data?.pricePerHour}
+								&#8358;{data?.field?.pricePerHour}
 							</span>{' '}
 							per Hour
 						</div>
-						<div className="md:border rounded-md mt-2 text-xs md:text-sm">
+						<div className="md:border rounded-md mt-2 text-sm md:text-lg">
 							<div className="md:flex">
-								<div className="py-3 md:px-4 border border-[#e0e0e0]">
+								<div className="py-3 md:px-4">
 									<label htmlFor="fromDate">Date</label>
 									<input
 										id="fromDate"
 										name="fromDate"
 										type="date"
+										className="w-full py-3 md:px-4 mt-2 border border-[#e0e0e0]"
 										min={new Date().toISOString().slice(0, 10)}
-										className="w-full "
 										value={fromDate}
 										onChange={(e) => setFromDate(e.target.value)}
 									/>
 								</div>
 							</div>
 							<div className="md:flex ">
-								<div className="py-3 md:px-4 border border-[#e0e0e0]">
+								<div className="py-3 md:px-4 ">
 									<label htmlFor="fromTime">From Time</label>
 									<select
 										id="fromTime"
 										name="fromTime"
-										className="w-full border border-[#e0e0e0]"
+										className="w-full py-3 md:px-4 mt-2 border border-[#e0e0e0]"
 										value={fromTime}
 										onChange={(e) => setFromTime(e.target.value)}
 									>
@@ -182,12 +183,12 @@ const BookField = () => {
 										))}
 									</select>
 								</div>
-								<div className="py-3 md:px-4 md:border-l border border-[#e0e0e0]">
+								<div className="py-3 md:px-4 ">
 									<label htmlFor="toTime">To Time</label>
 									<select
 										id="toTime"
 										name="toTime"
-										className="w-full border border-[#e0e0e0]"
+										className="w-full py-3 md:px-4 mt-2 border border-[#e0e0e0]"
 										value={toTime}
 										onChange={(e) => setToTime(e.target.value)}
 									>
@@ -203,7 +204,7 @@ const BookField = () => {
 						</div>
 						<div className="mt-4 w-full flex justify-center">
 							<button
-								className="w-full max-w-[300px] mx-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+								className="w-full max-w-[300px] mx-auto px-4 py-4 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-700 focus:outline-none focus:shadow-outline"
 								onClick={handleCheckBooking}
 							>
 								Reserve Field

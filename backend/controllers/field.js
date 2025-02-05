@@ -16,9 +16,14 @@ export const getFields = async (req, res) => {
 export const getField = async (req, res) => {
 	const { id } = req.params;
 	try {
-		const field = await Field.findById({ _id: id }).populate('userId');
-		res.status(201).json(field);
+		const field = await Field.findById({ _id: id }).populate('userId', 'email name phone role');
+		if (!field) {
+			return res.status(404).json({ message: 'Field not found' });
+		}
+		const bookings = await Booking.find({fieldId: id}).limit(5);
+		res.status(201).json({field, bookings});
 	} catch (error) {
+		console.log(error);
 		res.status(500).json({ message: 'Error finding field', error });
 	}
 };
@@ -83,99 +88,83 @@ export const updatePrice = async (req, res) => {
 		res.status(500).json({ message: 'Error updating prices', error });
 	}
 };
-export const checkBooking = async (req, res) => {
-	const { fieldId } = req.params;
-	const { endDate, startDate } = req.body;
-
-	try {
-		const field = await Field.findById(fieldId);
-		if (!field) return res.status(404).json({ message: 'Field not found' });
-		console.log('fieldId', fieldId);
-		// Check if the field is already booked for overlapping dates
-		const overlappingBooking = await Booking.findOne({
-			fieldId,
-			$or: [{ startDate: { $lt: endDate }, endDate: { $gt: startDate } }],
-		});
-		
-		console.log('overlappingBooking', overlappingBooking);
-		if (overlappingBooking) {
-			return res
-				.status(400)
-				.json({ message: 'Field is already booked for the selected dates' });
-		}
-		// Parse the startDate and endDate to ensure they're in the correct format (if necessary)
-		const start = new Date(startDate);
-		const end = new Date(endDate);
-
-		// Calculate the total number of days (ensure time difference is calculated correctly)
-		const timeDiff = Math.abs(end.getTime() - start.getTime()); // difference in milliseconds
-		const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // convert ms to days
-
-		// Assuming field.pricePerHour refers to hourly rate and there are 24 hours in a day
-		const totalPrice = field.pricePerHour * 24 * totalDays;
-
-		res.status(200).json({ message: 'Field is available', totalPrice });
-	} catch (error) {
-		console.error('Error booking field:', error);
-		res
-			.status(500)
-			.json({ message: 'Error booking field', error: error.message });
-	}
-};
 
 export const bookField = async (req, res) => {
 	const { fieldId } = req.params;
 	const userId = req.user._id;
-	const { endDate, startDate } = req.body;
+	const { endTime, startTime, amount, startDate } = req.body;
 
 	try {
+		// Check if the field exists
 		const field = await Field.findById(fieldId);
 		if (!field) return res.status(404).json({ message: 'Field not found' });
 
-		// Check if the field is already booked for overlapping dates
+		
+		const convertTimeToMinutes = (time) => {
+			const [hours, minutes] = time.split(':').map(Number);
+			return hours * 60 + (minutes || 0);
+		};
+
+		const startMinutes = convertTimeToMinutes(startTime); // "05:00" -> 300 minutes
+		const endMinutes = convertTimeToMinutes(endTime); // "07:00" -> 420 minutes
+
+		if (endMinutes <= startMinutes) {
+			return res
+				.status(400)
+				.json({ message: 'End time must be after start time' });
+		}
+
+		// Check for overlapping bookings
 		const overlappingBooking = await Booking.findOne({
 			fieldId,
-			$or: [{ startDate: { $lt: endDate }, endDate: { $gt: startDate } }],
+			startDate,
+			$or: [
+				{
+					startTime: { $lt: endTime },
+					endTime: { $gt: startTime },
+				},
+			],
 		});
+
 		if (overlappingBooking) {
 			return res
 				.status(400)
-				.json({ message: 'Field is already booked for the selected dates' });
+				.json({ message: 'Field is already booked for the selected time' });
 		}
-		// Parse the startDate and endDate to ensure they're in the correct format (if necessary)
-		const start = new Date(startDate);
-		const end = new Date(endDate);
 
-		// Calculate the total number of days (ensure time difference is calculated correctly)
-		const timeDiff = Math.abs(end.getTime() - start.getTime()); // difference in milliseconds
-		const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // convert ms to days
+		const totalMinutes = endMinutes - startMinutes;
+		const totalHours = Math.ceil(totalMinutes / 60); // Round up if there are extra minutes
 
-		// Assuming field.pricePerHour refers to hourly rate and there are 24 hours in a day
-		const totalPrice = field.pricePerHour * 24 * totalDays;
+		const totalPrice = totalHours * amount; // amount is 5000 per hour
 
+		// Create notifications
 		const admin = await User.findOne({ role: 'ADMIN' });
-		let userNotification = await Notification.create({
-			userid: userId,
-			title: 'New Booking',
-			message: `You have a new booking for ${totalDays} days`,
-			status: 'unread',
-		});
-		let adminNotification = await Notification.create({
-			userid: admin._id,
-			title: 'New Booking',
-			message: `A field has been booked for ${totalDays} days`,
-			status: 'unread',
-		});
+
+		await Notification.create([
+			{
+				userid: userId,
+				title: 'New Booking',
+				message: `You have a new booking for ${totalHours} hour(s).`,
+				status: 'unread',
+			},
+			{
+				userid: admin._id,
+				title: 'New Booking',
+				message: `A field has been booked for ${totalHours} hour(s).`,
+				status: 'unread',
+			},
+		]);
 
 		// Create new booking
 		const newBooking = await Booking.create({
 			fieldId,
 			userId,
-			days: totalDays,
 			startDate,
-			endDate,
+			startTime,
+			endTime,
 			amount: totalPrice,
 		});
+
 		res
 			.status(200)
 			.json({ message: 'Field successfully booked', booking: newBooking });
@@ -186,6 +175,7 @@ export const bookField = async (req, res) => {
 			.json({ message: 'Error booking field', error: error.message });
 	}
 };
+
 export const deleteField = async (req, res) => {
 	const { id } = req.params;
 	try {

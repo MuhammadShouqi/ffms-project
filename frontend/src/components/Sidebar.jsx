@@ -322,17 +322,17 @@ const Sidebar = ({ sideMenu, setSideMenu }) => {
 									</NavLink>
 								</li>
 							)}
-							<li>
-								<a
+							<li onClick={handleSideBar}>
+								<NavLink
+									to={'/bookings'}
 									onClick={() => handleNav(6)}
-									className={`
-										${
-											nav == 6
-												? 'bg-themeLight hover:bg-themeLight text-theme'
-												: ''
-										} group rounded-md relative text-black text-lg font-medium inline-flex items-center w-full transition-colors ease-in-out duration-300 px-5 py-[9px] mb-3 hover:bg-gray sidebar-NavLink-active`}
+									className={`${
+										nav == 6
+											? 'bg-themeLight hover:bg-themeLight text-theme'
+											: ''
+									} group rounded-md relative text-black text-lg font-medium inline-flex items-center w-full transition-colors ease-in-out duration-300 px-5 py-[9px] mb-2 hover:bg-gray sidebar-NavLink-active`}
 								>
-									<span className="inline-block translate-y-[1px] mr-[10px] text-xl">
+									<span className="inline-block  mr-[10px] text-xl">
 										<svg
 											className="-translate-y-[4px]"
 											xmlns="http://www.w3.org/2000/svg"
@@ -347,52 +347,8 @@ const Sidebar = ({ sideMenu, setSideMenu }) => {
 										</svg>
 									</span>
 									Bookings
-									<span
-										className={`absolute right-4 top-[52%] transition-transform duration-300 origin-center w-4 h-4" ${
-											nav == 6
-												? 'translate-y-[-10px] rotate-90'
-												: 'translate-y-[-10px]'
-										}`}
-									>
-										<svg
-											className="-translate-y-[5px]"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 24 24"
-											width="16"
-											height="16"
-										>
-											<path
-												fill="currentColor"
-												d="M15.4,9.88,10.81,5.29a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42L14,11.29a1,1,0,0,1,0,1.42L9.4,17.29a1,1,0,0,0,1.41,1.42l4.59-4.59A3,3,0,0,0,15.4,9.88Z"
-											/>
-										</svg>
-									</span>
-								</a>
-								{nav === 6 && (
-									<ul className="pl-[42px] pr-[20px] pb-3">
-										<li>
-											<NavLink
-												to={'/bookings'}
-												onClick={handleSideBar}
-												className="block font-normal w-full text-[#6D6F71] hover:text-theme nav-dot"
-											>
-												Bookings
-											</NavLink>
-										</li>
-
-										<li>
-											<NavLink
-												to={'/transactions'}
-												onClick={handleSideBar}
-												className="block font-normal w-full text-[#6D6F71] hover:text-theme nav-dot"
-											>
-												Transactions
-											</NavLink>
-										</li>
-									</ul>
-								)}
+								</NavLink>
 							</li>
-
 							<li>
 								<NavLink
 									to={'/profile'}

@@ -12,9 +12,9 @@ const BookingSchema = new mongoose.Schema(
 			ref: 'Field',
 			required: true,
 		},
-		days: { type: Number, required: true },
 		startDate: { type: Date, required: true },
-		endDate: { type: Date, required: true },
+		endTime: { type: String, required: true },
+		startTime: { type: String, required: true },
 		amount: { type: Number, required: true },
 		status: {
 			type: String,
