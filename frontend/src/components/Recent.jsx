@@ -9,7 +9,8 @@ const RecentTransactions = ({ tableData, handelAddModal }) => {
 	const navigate = useNavigate();
 
 	const handelClick = (item) => {
-		navigate(`/transactions/${item}`);
+		console.log('item', item);
+		navigate(`/bookings`);
 	};
 	return (
 		<div className="w-full p-3 bg-white flex flex-col col-span-12 rounded-xl border border-[#E7E7E7] lg:row-start-4">

@@ -31,7 +31,7 @@ const Sidebar = ({ sideMenu, setSideMenu }) => {
 		setToken('');
 		setIsLogoutModal(false);
 	};
-	console.log('user', user);
+	// // console.log('user', user);
 	useEffect(() => {
 		// Initial check on component mount
 		handleResize();
@@ -375,7 +375,7 @@ const Sidebar = ({ sideMenu, setSideMenu }) => {
 						</ul>
 						<div className="border-t border-gray pt-3 mt-3">
 							<button
-								onClick={openLogoutModal}
+								onClick={handleLogOut}
 								className="group rounded-md bg-red-200 hover:bg-red-300 relative text-black text-lg font-medium inline-flex items-center w-full transition-colors ease-in-out duration-300 px-5 py-[9px] mb-3 sidebar-NavLink-active"
 							>
 								<span className="inline-block translate-y-[1px] mr-[10px] text-xl">
@@ -399,8 +399,12 @@ const Sidebar = ({ sideMenu, setSideMenu }) => {
 				</div>
 			</aside>
 			{/*  Logout alert modal */}
-			<Transition appear show={isLogoutModal} as={Fragment}>
-				<Dialog as="div" className="relative" onClose={() => {}}>
+			{/* <Transition appear show={isLogoutModal} as={Fragment}>
+				<Dialog
+					as="div"
+					className="relative"
+					onClose={() => setIsLogoutModal(false)}
+				>
 					<Transition.div
 						as={Fragment}
 						enter="ease-out duration-300"
@@ -459,7 +463,7 @@ const Sidebar = ({ sideMenu, setSideMenu }) => {
 						</div>
 					</div>
 				</Dialog>
-			</Transition>
+			</Transition> */}
 		</>
 	);
 };

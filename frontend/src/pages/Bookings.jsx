@@ -19,6 +19,7 @@ const Order = () => {
 	// const navigate = useNavigate();
 	const [search, setSearch] = useState();
 	const [orders, setOrders] = useState('');
+	const [orderStatus, setOrderStatus] = useState('');
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['bookings'],
 		queryFn: async () => fetchBookings(user),
@@ -37,13 +38,13 @@ const Order = () => {
 	const config = {
 		headers: {
 			Authorization: `Bearer ${user?.token}`,
-			'Content-Type': 'multipart/form-data',
 		},
 	};
 	const [loading, setLoading] = useState(false);
 	const [showDeleteTooltip, setShowDeleteTooltip] = useState(false);
 	const [showEditTooltip, setShowEditTooltip] = useState(false);
-	const [isDeleteProductModal, setShowDeleteProductModal] = useState(false);
+	const [showDeleteProductModal, setShowDeleteProductModal] = useState(false);
+	const [showProductModal, setShowProductModal] = useState(false);
 
 	const handleMouseEnterEdit = (index) => {
 		setShowEditTooltip(index);
@@ -61,9 +62,13 @@ const Order = () => {
 	};
 	const handleEdit = (order) => {
 		setSelectedProduct(order);
+		console.log('edit', order);
+		setShowProductModal(true);
 	};
 	const handleDelete = async (order) => {
 		setSelectedProduct(order);
+		setShowDeleteProductModal(true);
+		console.log('delete', order);
 	};
 	const handleDeleteOrder = async (order) => {
 		if (!order) {
@@ -71,15 +76,44 @@ const Order = () => {
 		}
 		try {
 			setLoading(true);
+			setShowDeleteProductModal(false);
 			axios
-				.delete(`${apiUrl}/order/${order._id}`, config)
+				.delete(`${apiUrl}/bookings/${order._id}`, config)
 				.then((res) => {
 					console.log(res);
 					if (res.data) {
 						toast.success('Order deleted successfully');
 					}
 					console.log(res);
-					queryClient.invalidateQueries(['orders', 'order']);
+					queryClient.invalidateQueries(['bookings', 'booking', order._id]);
+				})
+				.catch((error) => {
+					const message = getError(error);
+					toast.error(message);
+				})
+				.finally(() => {
+					setLoading(false);
+				});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleUpdateOrder = async (order) => {
+		if (!order) {
+			return toast.error('Order id is required');
+		}
+		try {
+			setLoading(true);
+			setShowDeleteProductModal(false);
+			axios
+				.patch(`${apiUrl}/bookings/${order._id}`, { status }, config)
+				.then((res) => {
+					console.log(res);
+					if (res.data) {
+						toast.success('Order Updated successfully');
+					}
+					console.log(res);
+					queryClient.invalidateQueries(['bookings', 'booking', order._id]);
 				})
 				.catch((error) => {
 					const message = getError(error);
@@ -443,8 +477,12 @@ const Order = () => {
 				</div>
 			</div>
 			{isLoading || (loading && <Loader />)}
-			<Transition appear show={isDeleteProductModal} as={Fragment}>
-				<Dialog as="div" className="relative" onClose={() => {}}>
+			<Transition appear show={showDeleteProductModal} as={Fragment}>
+				<Dialog
+					as="div"
+					className="relative"
+					onClose={() => setShowDeleteProductModal(false)}
+				>
 					<Transition.Child
 						as={Fragment}
 						enter="ease-out duration-300"
@@ -468,12 +506,12 @@ const Order = () => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
+								<Dialog.Panel className="w-full max-w-md min-w-[450px] transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
 									<div className="space-y-5 p-4">
 										<div className="flex justify-between">
 											<div>
-												<p className="font-light text-primary">
-													Delete Product
+												<p className="font-light text-primary invisible">
+													Delete Order
 												</p>
 											</div>
 											<button
@@ -483,8 +521,13 @@ const Order = () => {
 												<i className="fa-solid fa-xmark text-xl text-red-300 hover:text-red-500" />
 											</button>
 										</div>
-										<div>
-											<p className="font-light text-center">
+										<div className="text-center">
+											<h4 className="text-[24px] mb-1">Delete Order</h4>
+											<p className="mt-3 text-lg md:text-xl">
+												Are you sure you want to log out?
+											</p>
+											<p className="mt-3 text-sm md:text-lg">
+												This booking will be deleted <br />
 												{selectedProduct?.name}
 											</p>
 										</div>
@@ -493,8 +536,82 @@ const Order = () => {
 											className="bg-red-400 hover:bg-red-600 text-white h-10 w-full flex items-center justify-center rounded-md"
 											onClick={() => handleDeleteOrder(selectedProduct)}
 										>
-											<span>Delete Product</span>
+											<span>Delete Order</span>
 											<i className="fa-solid fa-paper-plane text-2xl text-primary"></i>
+										</button>
+									</div>
+								</Dialog.Panel>
+							</Transition.Child>
+						</div>
+					</div>
+				</Dialog>
+			</Transition>
+			<Transition appear show={showProductModal} as={Fragment}>
+				<Dialog
+					as="div"
+					className="relative"
+					onClose={() => setShowProductModal(false)}
+				>
+					<Transition.Child
+						as={Fragment}
+						enter="ease-out duration-300"
+						enterFrom="opacity-0"
+						enterTo="opacity-100"
+						leave="ease-in duration-200"
+						leaveFrom="opacity-100"
+						leaveTo="opacity-0"
+					>
+						<div className="fixed inset-0 bg-black/70 bg-opacity-25 z-50" />
+					</Transition.Child>
+
+					<div className="fixed inset-0 overflow-y-auto flex place-content-center z-50">
+						<div className="flex min-h-full items-center justify-center p-4 text-center">
+							<Transition.Child
+								as={Fragment}
+								enter="ease-out duration-300"
+								enterFrom="opacity-0 scale-95"
+								enterTo="opacity-100 scale-100"
+								leave="ease-in duration-200"
+								leaveFrom="opacity-100 scale-100"
+								leaveTo="opacity-0 scale-95"
+							>
+								<Dialog.Panel className="w-full max-w-md min-w-[450px] transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
+									<div className="space-y-5 p-4 py-8">
+										<div className="flex justify-between">
+											<div>
+												<p className="font-bold text-primary text-[24px] mb-1">
+													Update Booking Status
+												</p>
+											</div>
+											<button
+												onClick={() => setShowProductModal(false)}
+												className="p-2 py-1.5 shadow rounded-full hover:bg-red-300 duration-150 ease-in-out"
+											>
+												<i className="fa-solid fa-xmark text-xl text-red-300 hover:text-red-500" />
+											</button>
+										</div>
+										<div className="mb-5">
+											<select
+												className="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+												name="status"
+												id="status"
+												value={orderStatus}
+												onChange={(e) => setOrderStatus(e.target.value)}
+											>
+												<option value="pending" selected="selected">
+													Pending
+												</option>
+												<option value="confirmed">Confirmed</option>
+												<option value="completed">Completed</option>
+												<option value="cancelled">Cancelled</option>
+											</select>
+										</div>
+										<button
+											disabled={isLoading || loading}
+											className="bg-green-400 hover:bg-green-600 text-white h-10 w-full flex items-center justify-center rounded-md"
+											onClick={() => handleUpdateOrder(selectedProduct)}
+										>
+											<span>Update Booking</span>
 										</button>
 									</div>
 								</Dialog.Panel>
