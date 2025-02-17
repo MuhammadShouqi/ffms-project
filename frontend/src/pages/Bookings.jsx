@@ -104,9 +104,9 @@ const Order = () => {
 		}
 		try {
 			setLoading(true);
-			setShowDeleteProductModal(false);
+			setShowProductModal(false);
 			axios
-				.patch(`${apiUrl}/bookings/${order._id}`, { status }, config)
+				.patch(`${apiUrl}/bookings/${order._id}`, { status : orderStatus}, config)
 				.then((res) => {
 					console.log(res);
 					if (res.data) {
@@ -506,7 +506,7 @@ const Order = () => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-md min-w-[450px] transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
+								<Dialog.Panel className="w-full max-w-md md:min-w-[450px] transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
 									<div className="space-y-5 p-4">
 										<div className="flex justify-between">
 											<div>
@@ -575,7 +575,7 @@ const Order = () => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-md min-w-[450px] transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
+								<Dialog.Panel className="w-full max-w-md md:min-w-[450px] transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
 									<div className="space-y-5 p-4 py-8">
 										<div className="flex justify-between">
 											<div>
