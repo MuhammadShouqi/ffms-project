@@ -13,10 +13,7 @@ const Section = () => {
 				</h2>
 				<div className="flex justify-center w-full md:max-w-xl mx-auto text-center leading-6">
 					<p>
-						At FFMS, we take immense pride in curating a stay that redefines
-						luxury. We&apos;re dedicated to ensuring that when you leave our
-						premises, your perception of opulence will have been forever
-						elevated.
+					At FFMS, we strive to make your stay unforgettable. We're committed to delivering a luxurious experience that will redefine your understanding of premium service.
 					</p>
 				</div>
 			</div>
@@ -27,7 +24,7 @@ const Section = () => {
 						className="max-w-[350px] bg-white shadow-2xl flex flex-col justify-center items-center gap-2 rounded-lg text-center  p-5 "
 					>
 						<div className="max-w-[150px]">
-							{/* <img src={sellImg} alt="" /> */}
+							{/* <img src={sellImg} alt="image" /> */}
 							<p>Reserve</p>
 						</div>
 						<h2 className="capitalize text-xl md:text-2xl ">Book a Field</h2>
@@ -36,12 +33,12 @@ const Section = () => {
 							of fields that is available for renting at the affordable price.
 						</p>
 					</div>
-					<div
+					{/* <div
 						data-aos="zoom-in-up"
 						className="max-w-[350px] bg-white  shadow-2xl flex flex-col justify-center items-center gap-2 rounded-lg text-center  p-5 "
 					>
 						<div className="max-w-[150px]">
-							{/* <img src={rentImg} alt="" /> */}
+							<img src={rentImg} alt="" />
 							<p>Rent</p>
 						</div>
 						<h2 className="capitalize text-xl md:text-2xl ">
@@ -52,7 +49,7 @@ const Section = () => {
 							listings and this include things that you won&apos;t find
 							anywhere.
 						</p>
-					</div>
+					</div> */}
 					<div
 						data-aos="zoom-in-up"
 						className="max-w-[350px]  bg-white shadow-2xl flex flex-col justify-center items-center gap-2 rounded-lg text-center  p-5 "
@@ -63,7 +60,7 @@ const Section = () => {
 						</div>
 						<h2 className="capitalize text-xl md:text-2xl ">List your feild</h2>
 						<p className="font-fonty text-[15px] md:text-[17px] ">
-							We have made listing your house easy for those that wish to. With
+							We have made listing your field easy for those that wish to. With
 							one click, our agent verify your house and you start making money
 							from it.
 						</p>
