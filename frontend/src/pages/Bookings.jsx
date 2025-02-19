@@ -25,9 +25,9 @@ const Order = () => {
 		queryFn: async () => fetchBookings(user),
 	});
 	useEffect(() => {
+		console.log(user);
 		if (data && data.length > 0) {
 			setOrders(data);
-			console.log(data);
 			// navigate('/');/
 		}
 		if (error) {
@@ -37,7 +37,7 @@ const Order = () => {
 	}, [data, error]);
 	const config = {
 		headers: {
-			Authorization: `Bearer ${user?.token}`,
+			Authorization: `Bearer ${user?.accessToken}`,
 		},
 	};
 	const [loading, setLoading] = useState(false);
