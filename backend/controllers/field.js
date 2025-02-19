@@ -35,7 +35,7 @@ export const createField = async (req, res) => {
 			return res.status(400).json({ message: 'Field image is required' });
 		}
 		const image = await uploader(req.file.path, 'fields');
-		const field = new Field({
+		const field = await Field.create({
 			userId,
 			name,
 			capacity,
@@ -44,8 +44,7 @@ export const createField = async (req, res) => {
 			image,
 			description,
 		});
-
-		await field.save();
+		
 		res.status(201).json(field);
 	} catch (error) {
 		console.log(error);

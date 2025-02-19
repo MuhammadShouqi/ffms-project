@@ -1,3 +1,4 @@
+// placeholder logo images
 export const logo =
 	'https://storage.googleapis.com/devitary-image-host.appspot.com/15846435184459982716-LogoMakr_7POjrN.png';
 

@@ -15,6 +15,7 @@ import notificationRoutes from './routes/notification.js';
 import healthRoutes from './routes/health.js';
 
 dotenv.config();
+// express server
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
@@ -35,6 +36,7 @@ app.use('/api/v1/notifications', notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 
+// connect to mongo db
 mongoose
 	.connect(process.env.MONGO_URI)
 	.then(() =>

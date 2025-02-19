@@ -64,6 +64,7 @@ function AddField() {
 			if (imageFile) {
 				formData.append('image', imageFile);
 			}
+			// post req to create field
 			const response = await axios.post(`${apiUrl}/fields`, formData, config);
 			setLoading(true);
 			await QueryClient.invalidateQueries({
