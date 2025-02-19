@@ -72,12 +72,18 @@ const BookField = () => {
 		}
 		const checkExistingBooking = existingBookings.filter((booking) => {
 			if (booking.fromDate == fromDate) {
-				if (booking.endTime == fromTime || booking.fromTime == toTime) {
+				console.log('booking from date', booking.fromDate )
+				console.log('from date', fromDate )
+				if (booking.endTime === fromTime || booking.fromTime == toTime) {
 					return booking;
 				}
+			}else{
+				return 
 			}
 		});
-		if (checkExistingBooking) {
+		console.log('checkExistingBooking', checkExistingBooking)
+
+		if (checkExistingBooking.length > 0) {
 			return toast.error('Time range has already been book.');
 		}
 		// Calculate the total time in hours and round up above 30 minutes

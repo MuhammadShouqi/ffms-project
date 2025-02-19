@@ -316,7 +316,7 @@ const Order = () => {
 														</span>
 													</Link>
 												</td>
-												<td className="px-3 py-3 font-normal text-[#55585B] text-end">
+												<td className="px-3 py-3 font-normal text-[#55585B] text-end whitespace-nowrap">
 													{moment(order?.startDate).format('YYYY-MM-DD')}
 												</td>
 												<td className="px-3 py-3 font-normal text-[#55585B] text-end">
@@ -329,7 +329,7 @@ const Order = () => {
 													{order.amount}
 												</td>
 												<td className="px-3 py-3 text-end">
-													<span className="text-[11px]  text-success px-3 py-1 rounded-md leading-none bg-success/10 font-medium text-end">
+													<span className={`text-[11px]   px-3 py-1 rounded-md leading-none  font-medium text-end ${order.status  === "confirmed" ? "bg-success/10 text-success" : "bg-danger/10 text-black"}`}>
 														{order.status}
 													</span>
 												</td>
