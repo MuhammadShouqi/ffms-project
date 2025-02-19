@@ -30,7 +30,7 @@ const LogoutModal = ({ setShow, show, handleBooking, amount }) => {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
+							<Dialog.Panel className="w-full max-w-md md:min-w-[450px] transform overflow-hidden rounded-xl bg-white text-left align-middle shadow-xl transition-all font-josefin">
 								<div className="flex justify-between px-5 pt-4">
 									<div>
 										<p className="font-light text-primary">Confirm Booking</p>

@@ -18,6 +18,7 @@ const BookField = () => {
 	const [fromTime, setFromTime] = useState('');
 	const [toTime, setToTime] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [existingBookings, setExistingBookings] = useState([]);
 	const [isModal, setIsModal] = useState(false);
 	const [amount, setAmount] = useState(0);
 	const [cost, setCost] = useState(0);
@@ -34,8 +35,9 @@ const BookField = () => {
 	}
 	useEffect(() => {
 		if (data) {
-			console.log('datyuiopoiuy', data);
+			console.log('datyuiopoiuy', data.bookings);
 			setAmount(data?.field?.pricePerHour);
+			setExistingBookings(data.bookings);
 		}
 	}, [data]);
 	// Generate time slots between 5 AM and 12 PM
@@ -68,7 +70,16 @@ const BookField = () => {
 		if (fromTime >= toTime) {
 			return toast.error('The end time must be after the start time.');
 		}
-
+		const checkExistingBooking = existingBookings.filter((booking) => {
+			if (booking.fromDate == fromDate) {
+				if (booking.endTime == fromTime || booking.fromTime == toTime) {
+					return booking;
+				}
+			}
+		});
+		if (checkExistingBooking) {
+			return toast.error('Time range has already been book.');
+		}
 		// Calculate the total time in hours and round up above 30 minutes
 		const [fromHours, fromMinutes] = fromTime.split(':').map(Number);
 		const [toHours, toMinutes] = toTime.split(':').map(Number);
@@ -92,6 +103,7 @@ const BookField = () => {
 	const handleBooking = async () => {
 		try {
 			setLoading(true);
+			setIsModal(false);
 			const { data } = await axios.post(
 				`${apiUrl}/fields/${id}/book`,
 				{ startDate: fromDate, startTime: fromTime, endTime: toTime, amount },
