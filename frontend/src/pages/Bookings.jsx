@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { Dialog, Transition } from '@headlessui/react';
 import getError from '../hooks/getError';
+import { FaRegSquareCheck, FaXmark } from 'react-icons/fa6';
 import moment from 'moment';
 const Order = () => {
 	const { user, selectedProduct, setSelectedProduct } = useContext(AuthContext);
@@ -98,7 +99,7 @@ const Order = () => {
 			console.log(error);
 		}
 	};
-	const handleUpdateOrder = async (order) => {
+	const handleUpdateOrder = async (order, orderStatus) => {
 		if (!order) {
 			return toast.error('Order id is required');
 		}
@@ -106,7 +107,11 @@ const Order = () => {
 			setLoading(true);
 			setShowProductModal(false);
 			axios
-				.patch(`${apiUrl}/bookings/${order._id}`, { status : orderStatus}, config)
+				.patch(
+					`${apiUrl}/bookings/${order._id}`,
+					{ status: orderStatus },
+					config
+				)
 				.then((res) => {
 					console.log(res);
 					if (res.data) {
@@ -329,13 +334,39 @@ const Order = () => {
 													{order.amount}
 												</td>
 												<td className="px-3 py-3 text-end">
-													<span className={`text-[11px]   px-3 py-1 rounded-md leading-none  font-medium text-end ${order.status  === "confirmed" ? "bg-success/10 text-success" : "bg-danger/10 text-black"}`}>
+													<span
+														className={`text-[11px]   px-3 py-1 rounded-md leading-none  font-medium text-end ${
+															order.status === 'confirmed'
+																? 'bg-success/10 text-success'
+																: 'bg-danger/10 text-black'
+														}`}
+													>
 														{order.status}
 													</span>
 												</td>
 												<td className="px-9 py-3 text-end">
 													<div className="flex items-center justify-end space-x-2">
-														<div className="relative">
+														<div className="flex gap-2">
+															<button
+																onClick={() =>
+																	handleUpdateOrder(order, {
+																		orderStatus: 'completed',
+																	})
+																}
+															>
+																<FaRegSquareCheck className="text-green-500 text-xl" />
+															</button>
+															<button
+																onClick={() =>
+																	handleUpdateOrder(order, {
+																		orderStatus: 'cancelled',
+																	})
+																}
+															>
+																<FaXmark className="text-red-500 text-xl" />
+															</button>
+														</div>
+														<div className="relative hidden">
 															<button
 																className="w-10 h-10 leading-10 text-tiny bg-success text-white rounded-md hover:bg-green-600"
 																onMouseEnter={() =>
@@ -371,7 +402,7 @@ const Order = () => {
 																</div>
 															)}
 														</div>
-														<div className="relative">
+														<div className="relative hidden">
 															<button
 																className="w-10 h-10 leading-[33px] text-tiny bg-white border border-gray text-slate-600 rounded-md hover:bg-danger hover:border-danger hover:text-white"
 																onMouseEnter={() =>

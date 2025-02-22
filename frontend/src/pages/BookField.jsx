@@ -139,6 +139,37 @@ const BookField = () => {
 		}
 	};
 
+		const payWithMonnify = async () => {
+			window.MonnifySDK.initialize({
+				amount,
+				currency: 'NGN',
+				customerFullName: user.user.name,
+				customerEmail: user.user.email,
+				customerMobileNumber: user.user.phone,
+				apiKey: import.meta.env.VITE_MONNIFY_API_KEY,
+				contractCode: import.meta.env.VITE_MONNIFY_CONTRACT_CODE,
+				reference: 'TRANS_' + new Date().getTime(),
+				paymentDescription: 'Payment for services',
+				metadata: {
+					name: 'John',
+					age: 30,
+				},
+				onLoadStart: () => {
+					console.log('loading has started');
+				},
+				onLoadComplete: () => {
+					console.log('SDK is UP');
+				},
+				onComplete: (response) => {
+					console.log('response ....', response);
+					handleBooking(response);
+				},
+				onClose: (data) => {
+					console.log(data);
+				},
+			});
+		};
+
 	const generateTimeOptions = () => {
 		const times = [];
 		for (let hour = 0; hour < 24; hour++) {
@@ -236,7 +267,7 @@ const BookField = () => {
 					amount={cost}
 					setShow={setIsModal}
 					show={isModal}
-					handleBooking={handleBooking}
+					handleBooking={payWithMonnify}
 				/>
 			)}
 		</>
