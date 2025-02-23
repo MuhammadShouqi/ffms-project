@@ -51,7 +51,7 @@ const BookField = () => {
 		while (currentTime < endTime) {
 			const timeString = currentTime.toTimeString().slice(0, 5); // Format: HH:MM
 			slots.push(timeString);
-			currentTime.setMinutes(currentTime.getMinutes() + 30); // 30-minute intervals
+			currentTime.setMinutes(currentTime.getMinutes() + 60); // 30-minute intervals
 		}
 		return slots;
 	};
@@ -72,16 +72,16 @@ const BookField = () => {
 		}
 		const checkExistingBooking = existingBookings.filter((booking) => {
 			if (booking.fromDate == fromDate) {
-				console.log('booking from date', booking.fromDate )
-				console.log('from date', fromDate )
+				console.log('booking from date', booking.fromDate);
+				console.log('from date', fromDate);
 				if (booking.endTime === fromTime || booking.fromTime == toTime) {
 					return booking;
 				}
-			}else{
-				return 
+			} else {
+				return;
 			}
 		});
-		console.log('checkExistingBooking', checkExistingBooking)
+		console.log('checkExistingBooking', checkExistingBooking);
 
 		if (checkExistingBooking.length > 0) {
 			return toast.error('Time range has already been book.');
@@ -139,36 +139,36 @@ const BookField = () => {
 		}
 	};
 
-		const payWithMonnify = async () => {
-			window.MonnifySDK.initialize({
-				amount,
-				currency: 'NGN',
-				customerFullName: user.user.name,
-				customerEmail: user.user.email,
-				customerMobileNumber: user.user.phone,
-				apiKey: import.meta.env.VITE_MONNIFY_API_KEY,
-				contractCode: import.meta.env.VITE_MONNIFY_CONTRACT_CODE,
-				reference: 'TRANS_' + new Date().getTime(),
-				paymentDescription: 'Payment for services',
-				metadata: {
-					name: 'John',
-					age: 30,
-				},
-				onLoadStart: () => {
-					console.log('loading has started');
-				},
-				onLoadComplete: () => {
-					console.log('SDK is UP');
-				},
-				onComplete: (response) => {
-					console.log('response ....', response);
-					handleBooking(response);
-				},
-				onClose: (data) => {
-					console.log(data);
-				},
-			});
-		};
+	const payWithMonnify = async () => {
+		window.MonnifySDK.initialize({
+			amount,
+			currency: 'NGN',
+			customerFullName: user.user.name,
+			customerEmail: user.user.email,
+			customerMobileNumber: user.user.phone,
+			apiKey: import.meta.env.VITE_MONNIFY_API_KEY,
+			contractCode: import.meta.env.VITE_MONNIFY_CONTRACT_CODE,
+			reference: 'TRANS_' + new Date().getTime(),
+			paymentDescription: 'Payment for services',
+			metadata: {
+				name: 'John',
+				age: 30,
+			},
+			onLoadStart: () => {
+				console.log('loading has started');
+			},
+			onLoadComplete: () => {
+				console.log('SDK is UP');
+			},
+			onComplete: (response) => {
+				console.log('response ....', response);
+				handleBooking(response);
+			},
+			onClose: (data) => {
+				console.log(data);
+			},
+		});
+	};
 
 	const generateTimeOptions = () => {
 		const times = [];
@@ -178,6 +178,7 @@ const BookField = () => {
 					minutes
 				).padStart(2, '0')}`;
 				times.push(formattedTime);
+				5;
 			}
 		}
 		return times;

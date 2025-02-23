@@ -349,18 +349,15 @@ const Order = () => {
 														<div className="flex gap-2">
 															<button
 																onClick={() =>
-																	handleUpdateOrder(order, {
-																		orderStatus: 'completed',
-																	})
+																	handleUpdateOrder(order, 'completed')
 																}
 															>
 																<FaRegSquareCheck className="text-green-500 text-xl" />
 															</button>
 															<button
 																onClick={() =>
-																	handleUpdateOrder(order, {
-																		orderStatus: 'cancelled',
-																	})
+																	handleUpdateOrder(order, 'cancelled'
+																	)
 																}
 															>
 																<FaXmark className="text-red-500 text-xl" />
@@ -446,7 +443,7 @@ const Order = () => {
 							</tbody>
 						</table>
 					</div>
-					<div className="flex justify-between items-center flex-wrap mx-8">
+					<div className="flex justify-between items-center flex-wrap mx-8 hidden">
 						<p className="mb-0 text-tiny">Showing 10 Prdouct of 120</p>
 						<div className="pagination py-3 flex justify-end items-center  mx-8">
 							<Link
