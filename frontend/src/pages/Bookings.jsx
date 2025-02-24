@@ -356,8 +356,7 @@ const Order = () => {
 															</button>
 															<button
 																onClick={() =>
-																	handleUpdateOrder(order, 'cancelled'
-																	)
+																	handleUpdateOrder(order, 'cancelled')
 																}
 															>
 																<FaXmark className="text-red-500 text-xl" />
@@ -399,7 +398,7 @@ const Order = () => {
 																</div>
 															)}
 														</div>
-														<div className="relative hidden">
+														<div className="relative">
 															<button
 																className="w-10 h-10 leading-[33px] text-tiny bg-white border border-gray text-slate-600 rounded-md hover:bg-danger hover:border-danger hover:text-white"
 																onMouseEnter={() =>

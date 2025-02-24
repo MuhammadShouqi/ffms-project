@@ -80,7 +80,7 @@ export const editBooking = async (req, res) => {
 		if (!booking) {
 			return res.status(404).json({ message: 'Booking not found' });
 		}
-		res.status(201).json({ message: 'Booking delete successfully' });
+		res.status(201).json({ message: 'Booking updated successfully' });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
