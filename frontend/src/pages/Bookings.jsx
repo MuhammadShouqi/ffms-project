@@ -400,7 +400,7 @@ const Order = () => {
 														</div>
 														<div className="relative">
 															<button
-																className="w-10 h-10 leading-[33px] text-tiny bg-white border border-gray text-slate-600 rounded-md hover:bg-danger hover:border-danger hover:text-white"
+																className="w-10 h-10 leading-[33px] text-center text-tiny bg-white border border-gray text-slate-600 rounded-md hover:bg-danger hover:border-danger hover:text-white"
 																onMouseEnter={() =>
 																	handleMouseEnterDelete(order._id)
 																}
@@ -408,7 +408,7 @@ const Order = () => {
 																onClick={() => handleDelete(order)}
 															>
 																<svg
-																	className="-translate-y-px"
+																	className="-translate-y-px mx-auto"
 																	width="14"
 																	height="14"
 																	viewBox="0 0 20 22"
